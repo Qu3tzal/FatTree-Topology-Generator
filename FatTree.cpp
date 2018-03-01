@@ -52,7 +52,8 @@ void FatTree::serialize(const std::string& filepath)
         }
     }
 
-    std::cout << std::endl;
+    std::cout << "Workstation end" << std::endl;
+    std::cout << "Printing edge and aggregation" << std::endl;
 
     // List the edge + aggregation.
     for(unsigned int i(0) ; i < m_pods.size() ; ++i)

@@ -8,13 +8,13 @@ Pod::Pod(unsigned int id, unsigned int numberOfPods)
     // Create the aggregation switches.
     for(unsigned int i(0) ; i < numberOfPods / 2 ; ++i)
     {
-        m_workstations.push_back(Node({id, i + numberOfPods / 2, 1}, NodeHardware::Switch, NodeType::Aggregation, numberOfPods));
+        m_aggregations.push_back(Node({id, i + numberOfPods / 2, 1}, NodeHardware::Switch, NodeType::Aggregation, numberOfPods));
     }
 
     // Create the edge switches.
     for(unsigned int i(0) ; i < numberOfPods / 2 ; ++i)
     {
-        m_workstations.push_back(Node({id, i, 1}, NodeHardware::Switch, NodeType::Edge, numberOfPods));
+        m_edges.push_back(Node({id, i, 1}, NodeHardware::Switch, NodeType::Edge, numberOfPods));
     }
 
     // Create the workstations.
