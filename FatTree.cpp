@@ -29,6 +29,24 @@ FatTree::~FatTree()
 {
 }
 
+/**
+ * @brief Helper function to print node links.
+ * @param a reference to a node
+ */
+void printNodeLinks(Node& n)
+{
+    unsigned int j(0);
+    for(NodeLink& nl : n.getLinks())
+    {
+        j++;
+        if(nl.node == nullptr)
+            continue;
+
+        std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
+    }
+    std::cout << std::endl;
+}
+
 void FatTree::serialize(const std::string& filepath)
 {
     std::cout << "Listing..." << std::endl;
@@ -38,6 +56,7 @@ void FatTree::serialize(const std::string& filepath)
     {
         std::string hw = (m_cores[i].getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
         std::cout << hw << "\t" << m_cores[i].getNumberOfPorts() << "\t\"" << m_cores[i].getName() << "\"" << std::endl;
+        printNodeLinks(m_cores[i]);
     }
 
     std::cout << std::endl;
@@ -49,6 +68,7 @@ void FatTree::serialize(const std::string& filepath)
         {
             std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
             std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
+            printNodeLinks(n);
         }
     }
 
@@ -62,62 +82,14 @@ void FatTree::serialize(const std::string& filepath)
         {
             std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
             std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
+            printNodeLinks(n);
         }
 
         for(Node& n : m_pods[i].getAggregation())
         {
             std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
             std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
+            printNodeLinks(n);
         }
-    }
-
-    std::cout << "Core links" << std::endl;
-    for(unsigned int i(0) ; i < m_pods.size() ; ++i)
-    {
-        // List the cores connections
-        for(Node& n : m_pods[i].getAggregation())
-        {
-            unsigned int j(0);
-            for(NodeLink& nl : n.getLinks())
-            {
-                j++;
-                if(nl.node == nullptr)
-                    continue;
-
-                std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
-            }
-        }
-    }
-    std::cout << "Reverse connection" << std::endl;
-    for(Node& n : m_cores)
-    {
-        unsigned int j(0);
-        for(NodeLink& nl : n.getLinks())
-        {
-            j++;
-            if(nl.node == nullptr)
-                continue;
-
-            std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
-        }
-    }
-
-    std::cout << "Workstation links" << std::endl;
-    for(unsigned int i(0) ; i < m_pods.size() ; ++i)
-    {
-        // List the cores connections
-        for(Node& n : m_pods[i].getWorkstation())
-        {
-            unsigned int j(0);
-            for(NodeLink& nl : n.getLinks())
-            {
-                j++;
-                if(nl.node == nullptr)
-                    continue;
-
-                std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
-            }
-        }
-
     }
 }
