@@ -27,7 +27,7 @@ Pod::Pod(unsigned int id, unsigned int numberOfPods)
     unsigned int currentWorkstation(0);
     for(unsigned int i(0) ; i < m_edges.size() ; ++i)
     {
-        unsigned int portNumber(0);
+        unsigned int portNumber(2);
         for(unsigned int j(0) ; j < m_edges[i].getNumberOfPorts() / 2 ; j++)
         {
             m_edges[i].connectTo(&(m_workstations[currentWorkstation]), portNumber, 1);
