@@ -40,5 +40,6 @@ Node::~Node()
 
 void Node::connectTo(Node* node, unsigned int fromPort, unsigned int toPort)
 {
-
+    m_links[fromPort - 1] = {node, toPort};
+    node->getLinks()[toPort - 1] = {this, fromPort};
 }

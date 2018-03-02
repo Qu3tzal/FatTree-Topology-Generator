@@ -31,5 +31,13 @@ Pod::~Pod()
 
 void Pod::connectToCores(std::vector<Node>& cores)
 {
-
+   unsigned int currentCore(0);
+   for(unsigned int i(0); i < m_aggregations.size(); ++i)
+   {
+       for(unsigned int j(1) ; j < (m_aggregations[i].getNumberOfPorts()); j += 2)
+       {
+           m_aggregations[i].connectTo(&(cores[currentCore]), j, m_id + 1);
+           currentCore++;
+       }
+   }
 }

@@ -87,6 +87,11 @@ class Node
          */
         NodeHardware getHardware() const {return m_hardwareType;}
 
+        /**
+         * @brief Returns Links list.
+         */
+        std::vector<NodeLink>& getLinks() {return m_links;}
+
     private:
         NodeID m_id;
         NodeHardware m_hardwareType;
