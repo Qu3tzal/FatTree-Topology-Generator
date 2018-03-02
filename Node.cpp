@@ -1,6 +1,7 @@
 #include "Node.hpp"
 
 #include <sstream>
+#include <iostream>
 
 Node::Node(NodeID id, NodeHardware hardwareType, NodeType logicalType, unsigned int numberOfPorts)
     : m_id(id)
@@ -40,6 +41,8 @@ Node::~Node()
 
 void Node::connectTo(Node* node, unsigned int fromPort, unsigned int toPort)
 {
+    std::cout << node->getName() << std::endl;
+    std::cout << getName() << std::endl;
     m_links[fromPort - 1] = {node, toPort};
     node->getLinks()[toPort - 1] = {this, fromPort};
 }

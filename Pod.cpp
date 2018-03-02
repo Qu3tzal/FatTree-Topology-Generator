@@ -22,6 +22,23 @@ Pod::Pod(unsigned int id, unsigned int numberOfPods)
     {
         m_workstations.push_back(Node({workstationId, 0, 0}, NodeHardware::Hca, NodeType::Workstation, 1));
     }
+
+    // Connect Workstation to edges
+    unsigned int currentWorkstation(0);
+    for(unsigned int i(0) ; i < m_edges.size() ; ++i)
+    {
+        for(unsigned int j(2) ; j <= m_edges[i].getNumberOfPorts() ; j += 2)
+        {
+            m_edges[i].connectTo(&(m_workstations[currentWorkstation]), j, 1);
+            currentWorkstation++;
+        }
+    }
+
+    /*// Connect Edge to aggregations
+    for(unsigned int i(0) ; i < m_edges.size() ; ++i)
+    {
+
+    }*/
 }
 
 Pod::~Pod()
@@ -34,7 +51,7 @@ void Pod::connectToCores(std::vector<Node>& cores)
    unsigned int currentCore(0);
    for(unsigned int i(0); i < m_aggregations.size(); ++i)
    {
-       for(unsigned int j(1) ; j < (m_aggregations[i].getNumberOfPorts()); j += 2)
+       for(unsigned int j(1) ; j <= (m_aggregations[i].getNumberOfPorts()); j += 2)
        {
            m_aggregations[i].connectTo(&(cores[currentCore]), j, m_id + 1);
            currentCore++;
