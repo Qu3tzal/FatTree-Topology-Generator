@@ -42,6 +42,7 @@ void printNodeLinks(Node& n)
         if(nl.node == nullptr)
             continue;
 
+        std::cout << "nl.node: " << nl.node << std::endl;
         std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
     }
     std::cout << std::endl;
@@ -61,20 +62,6 @@ void FatTree::serialize(const std::string& filepath)
 
     std::cout << std::endl;
 
-    // List the workstations.
-    for(unsigned int i(0) ; i < m_pods.size() ; ++i)
-    {
-        for(Node& n : m_pods[i].getWorkstation())
-        {
-            std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
-            std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
-            printNodeLinks(n);
-        }
-    }
-
-    std::cout << "Workstation end" << std::endl;
-    std::cout << "Printing edge and aggregation" << std::endl;
-
     // List the edge + aggregation.
     for(unsigned int i(0) ; i < m_pods.size() ; ++i)
     {
@@ -85,7 +72,22 @@ void FatTree::serialize(const std::string& filepath)
             printNodeLinks(n);
         }
 
+        std::cout << std::endl;
+
         for(Node& n : m_pods[i].getAggregation())
+        {
+            std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
+            std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
+            printNodeLinks(n);
+        }
+    }
+
+    std::cout << std::endl;
+
+    // List the workstations.
+    for(unsigned int i(0) ; i < m_pods.size() ; ++i)
+    {
+        for(Node& n : m_pods[i].getWorkstation())
         {
             std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
             std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
