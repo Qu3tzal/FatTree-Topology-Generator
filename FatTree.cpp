@@ -44,8 +44,8 @@ void printNodeLinks(Node& n)
         if(nl.node == nullptr)
             continue;
 
-        //std::cout << "nl.node: " << nl.node << std::endl;
-        std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
+       // std::cout << "nl.node: " << nl.node << std::endl;
+        std::cout << "[" << j << "] \"" << nl.node->getName() << "\"[" << nl.portNumber << "]" << std::endl;
     }
     std::cout << std::endl;
 }
