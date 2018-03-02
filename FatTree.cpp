@@ -9,24 +9,26 @@ FatTree::FatTree(unsigned int numberOfPods)
     // Generate the core nodes.
     for(unsigned int i(0) ; i < std::pow(numberOfPods / 2, 2) ; ++i)
     {
-        m_cores.push_back(Node({numberOfPods, i, 0}, NodeHardware::Switch, NodeType::Core, numberOfPods));
+        m_cores.push_back(new Node({numberOfPods, i, 0}, NodeHardware::Switch, NodeType::Core, numberOfPods));
     }
 
     // Generate the pods.
     for(unsigned int i(0) ; i < numberOfPods ; ++i)
     {
-        m_pods.push_back(Pod(i, numberOfPods));
+        m_pods.push_back(new Pod(i, numberOfPods));
     }
 
     // Connect the pods to the cores.
     for(unsigned int i(0) ; i < numberOfPods ; ++i)
     {
-        m_pods[i].connectToCores(m_cores);
+        m_pods[i]->connectToCores(m_cores);
     }
 }
 
 FatTree::~FatTree()
 {
+    for(auto it = m_pods.begin(); it != m_pods.end(); it++)
+        delete *it;
 }
 
 /**
@@ -42,7 +44,7 @@ void printNodeLinks(Node& n)
         if(nl.node == nullptr)
             continue;
 
-        std::cout << "nl.node: " << nl.node << std::endl;
+        //std::cout << "nl.node: " << nl.node << std::endl;
         std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
     }
     std::cout << std::endl;
@@ -55,9 +57,9 @@ void FatTree::serialize(const std::string& filepath)
     // List the core nodes.
     for(unsigned int i(0) ; i < m_cores.size() ; ++i)
     {
-        std::string hw = (m_cores[i].getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
-        std::cout << hw << "\t" << m_cores[i].getNumberOfPorts() << "\t\"" << m_cores[i].getName() << "\"" << std::endl;
-        printNodeLinks(m_cores[i]);
+        std::string hw = (m_cores[i]->getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
+        std::cout << hw << "\t" << m_cores[i]->getNumberOfPorts() << "\t\"" << m_cores[i]->getName() << "\"" << std::endl;
+        printNodeLinks(*m_cores[i]);
     }
 
     std::cout << std::endl;
@@ -65,20 +67,20 @@ void FatTree::serialize(const std::string& filepath)
     // List the edge + aggregation.
     for(unsigned int i(0) ; i < m_pods.size() ; ++i)
     {
-        for(Node& n : m_pods[i].getEdge())
+        for(Node * n : m_pods[i]->getEdge())
         {
-            std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
-            std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
-            printNodeLinks(n);
+            std::string hw = (n->getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
+            std::cout << hw << "\t" << n->getNumberOfPorts() << "\t\"" << n->getName() << "\"" << std::endl;
+            printNodeLinks(*n);
         }
 
         std::cout << std::endl;
 
-        for(Node& n : m_pods[i].getAggregation())
+        for(Node * n : m_pods[i]->getAggregation())
         {
-            std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
-            std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
-            printNodeLinks(n);
+            std::string hw = (n->getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
+            std::cout << hw << "\t" << n->getNumberOfPorts() << "\t\"" << n->getName() << "\"" << std::endl;
+            printNodeLinks(*n);
         }
     }
 
@@ -87,11 +89,11 @@ void FatTree::serialize(const std::string& filepath)
     // List the workstations.
     for(unsigned int i(0) ; i < m_pods.size() ; ++i)
     {
-        for(Node& n : m_pods[i].getWorkstation())
+        for(Node * n : m_pods[i]->getWorkstation())
         {
-            std::string hw = (n.getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
-            std::cout << hw << "\t" << n.getNumberOfPorts() << "\t\"" << n.getName() << "\"" << std::endl;
-            printNodeLinks(n);
+            std::string hw = (n->getHardware() == NodeHardware::Hca) ? "Hca" : "Switch";
+            std::cout << hw << "\t" << n->getNumberOfPorts() << "\t\"" << n->getName() << "\"" << std::endl;
+            printNodeLinks(*n);
         }
     }
 }

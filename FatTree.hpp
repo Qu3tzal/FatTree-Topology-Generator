@@ -33,10 +33,10 @@ class FatTree
         unsigned int m_numberOfPods;
 
         // The list of the core nodes.
-        std::vector<Node> m_cores;
+        std::vector<Node*> m_cores;
 
         // The list of the pods.
-        std::vector<Pod> m_pods;
+        std::vector<Pod*> m_pods;
 };
 
 #endif // FATTREE_HPP_INCLUDED
