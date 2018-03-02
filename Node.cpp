@@ -41,6 +41,21 @@ Node::~Node()
 
 void Node::connectTo(Node* node, unsigned int fromPort, unsigned int toPort)
 {
-    m_links[fromPort - 1] = {node, toPort};
-    node->getLinks()[toPort - 1] = {this, fromPort};
+    if(node == nullptr)
+    {
+        std::cerr << "[Node::connectTo] node is nullptr." << std::endl;
+    }
+    else if(fromPort - 1 > m_links.size())
+    {
+        std::cerr << "[Node::connectTo] fromPort - 1 > m_links.size()." << std::endl;
+    }
+    else if(toPort - 1 > node->getLinks().size())
+    {
+        std::cerr << "[Node::connectTo] toPort - 1 > node->getLinks().size()." << std::endl;
+    }
+    else
+    {
+        m_links[fromPort - 1] = {node, toPort};
+        node->getLinks()[toPort - 1] = {this, fromPort};
+    }
 }
