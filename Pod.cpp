@@ -27,17 +27,26 @@ Pod::Pod(unsigned int id, unsigned int numberOfPods)
     unsigned int currentWorkstation(0);
     for(unsigned int i(0) ; i < m_edges.size() ; ++i)
     {
-        for(unsigned int j(2) ; j <= m_edges[i].getNumberOfPorts() ; j += 2)
+        unsigned int portNumber(0);
+        for(unsigned int j(0) ; j < m_edges[i].getNumberOfPorts() / 2 ; j++)
         {
-            m_edges[i].connectTo(&(m_workstations[currentWorkstation]), j, 1);
+            m_edges[i].connectTo(&(m_workstations[currentWorkstation]), portNumber, 1);
             currentWorkstation++;
+            portNumber += 2;
         }
     }
 
-    /*// Connect Edge to aggregations
-    for(unsigned int i(0) ; i < m_edges.size() ; ++i)
+    // Connect Edge to aggregations
+    /*for(unsigned int i(0), agregationPort(2); i < m_edges.size() ; ++i, agregationPort += 2)
     {
-
+        unsigned int agregationNumber(0);
+        unsigned int edgePort(1);
+        for(unsigned int j(0) ; j < m_edges[i].getNumberOfPorts() / 2 ;j++)
+        {
+            m_edges[i].connectTo(&(m_aggregations[agregationNumber]), edgePort, agregationPort);
+            agregationNumber++;
+            edgePort += 2;
+        }
     }*/
 }
 
@@ -51,10 +60,12 @@ void Pod::connectToCores(std::vector<Node>& cores)
    unsigned int currentCore(0);
    for(unsigned int i(0); i < m_aggregations.size(); ++i)
    {
-       for(unsigned int j(1) ; j <= (m_aggregations[i].getNumberOfPorts()); j += 2)
+       unsigned int portNumber(1);
+       for(unsigned int j(0) ; j < (m_aggregations[i].getNumberOfPorts() / 2); j++)
        {
-           m_aggregations[i].connectTo(&(cores[currentCore]), j, m_id + 1);
+           m_aggregations[i].connectTo(&(cores[currentCore]), portNumber, m_id + 1);
            currentCore++;
+           portNumber += 2;
        }
    }
 }
