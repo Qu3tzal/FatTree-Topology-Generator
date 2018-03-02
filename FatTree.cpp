@@ -77,54 +77,45 @@ void FatTree::serialize(const std::string& filepath)
         // List the cores connections
         for(Node& n : m_pods[i].getAggregation())
         {
-            unsigned int j(1);
+            unsigned int j(0);
             for(NodeLink& nl : n.getLinks())
             {
-                if(nl.node == nullptr)
-                {
-                    j++;
-                    continue;
-                }
-                std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
                 j++;
+                if(nl.node == nullptr)
+                    continue;
+
+                std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
             }
         }
     }
     std::cout << "Reverse connection" << std::endl;
     for(Node& n : m_cores)
     {
-        unsigned int j(1);
+        unsigned int j(0);
         for(NodeLink& nl : n.getLinks())
         {
-            if(nl.node == nullptr)
-            {
-                std::cout << "Ah" << std::endl;
-                j++;
-                continue;
-            }
-            std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
             j++;
+            if(nl.node == nullptr)
+                continue;
+
+            std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
         }
     }
 
     std::cout << "Workstation links" << std::endl;
     for(unsigned int i(0) ; i < m_pods.size() ; ++i)
     {
-        std::cout << " ?" << std::endl;
         // List the cores connections
         for(Node& n : m_pods[i].getWorkstation())
         {
-            unsigned int j(1);
+            unsigned int j(0);
             for(NodeLink& nl : n.getLinks())
             {
-                if(nl.node == nullptr)
-                {
-                    std::cout << "AH" << std::endl;
-                    j++;
-                    continue;
-                }
-                std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
                 j++;
+                if(nl.node == nullptr)
+                    continue;
+
+                std::cout << n.getName() << " [" << j << "] -> " << nl.node->getName() << " [" << nl.portNumber << "]" << std::endl;
             }
         }
 
